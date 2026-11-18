@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LockIn – กล่องล็อกมือถือ อ่านหนังสือให้เข้าหัว</title>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&family=Bricolage+Grotesque:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef1f4;--card:#fff;--ink:#101820;--mute:#56606b;--hot:#ff5a36;--mint:#1fa985;--line:#d3d9df;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12171d;--card:#1c232b;--ink:#eef1f4;--mute:#a1abb6;--line:#2f3943}}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.7 Prompt,"Noto Sans Thai",system-ui,sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque",Prompt,sans-serif;font-weight:800;line-height:1.15;margin:0 0 .5em}
+h1{font-size:clamp(2.4rem,7vw,4.4rem)}h2{font-size:clamp(1.8rem,4vw,2.5rem)}h3{font-size:1.25rem}
+nav{display:flex;flex-wrap:wrap;gap:.3rem 1.2rem;justify-content:space-between;align-items:center;padding:.9rem 5vw;background:var(--bg);border-bottom:2px solid var(--ink);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.logo{font:800 1.5rem "Bricolage Grotesque",sans-serif;text-decoration:none;color:var(--ink)}.logo b{color:var(--hot)}
+nav ul{display:flex;flex-wrap:wrap;gap:.2rem 1rem;list-style:none;margin:0;padding:0;font-size:.92rem}
+nav a.link{text-decoration:none;color:var(--mute);border-bottom:3px solid transparent;padding:.1rem 0}
+nav a.link.on,nav a.link:hover{color:var(--ink);border-color:var(--hot)}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--mint);outline-offset:2px}
+main{max-width:1050px;margin:0 auto;padding:3rem 5vw 4rem}
+.page{display:none}.page.on{display:block}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:2.5rem;align-items:center}
+.hero p{color:var(--mute);font-size:1.1rem;max-width:44ch}
+.timer{background:var(--ink);color:var(--bg);border-radius:22px;padding:2rem;text-align:center}
+.timer .t{font:800 clamp(3.6rem,10vw,5.5rem)/1 "Bricolage Grotesque",sans-serif;font-variant-numeric:tabular-nums}
+.timer .s{min-height:1.7em;color:var(--mint);margin:.5rem 0 1rem}
+.timer.run .t{color:var(--hot)}
+.btn{display:inline-block;background:var(--hot);color:#fff;border:2px solid var(--ink);border-radius:10px;padding:.65rem 1.4rem;font:600 1rem Prompt,sans-serif;cursor:pointer;text-decoration:none;box-shadow:3px 3px 0 var(--ink)}
+.btn.alt{background:var(--card);color:var(--ink)}
+.timer .btn{border-color:var(--bg);box-shadow:3px 3px 0 var(--bg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.5rem}
+.card{background:var(--card);border:2px solid var(--ink);border-radius:14px;overflow:hidden}
+.card .b{padding:1rem 1.2rem 1.3rem}.card p{color:var(--mute);margin:.2rem 0 .8rem;font-size:.92rem}
+.box{height:170px;display:grid;place-items:center;background:var(--c);border-bottom:2px solid var(--ink)}
+.box i{display:block;width:84px;height:104px;background:var(--ink);border-radius:10px;position:relative}
+.box i::after{content:"";position:absolute;left:50%;top:14px;width:34px;height:6px;margin-left:-17px;background:var(--bg);border-radius:3px;opacity:.7}
+.price{color:var(--hot);font-weight:600}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.5rem}
+.panel{background:var(--card);border:2px solid var(--ink);border-radius:14px;padding:1.3rem 1.5rem}
+.panel p{color:var(--mute);margin:0}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:center}
+.big{height:330px;border:2px solid var(--ink);border-radius:18px;display:grid;place-items:center;background:var(--c)}.big i{transform:scale(2.3)}
+input,textarea{width:100%;background:var(--card);border:2px solid var(--ink);border-radius:10px;color:var(--ink);padding:.65rem .9rem;font:inherit}
+label{display:block;margin-bottom:1rem;color:var(--mute);font-size:.9rem}
+table{width:100%;border-collapse:collapse}td,th{padding:.7rem .4rem;border-bottom:1px solid var(--line);text-align:left}
+.tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.tabs button{background:var(--card);border:2px solid var(--ink);color:var(--ink);border-radius:999px;padding:.3rem 1rem;font:inherit;cursor:pointer}
+.tabs button.on{background:var(--ink);color:var(--bg)}
+.step{display:grid;grid-template-columns:3rem 1fr;gap:1rem;margin-bottom:1.5rem}
+.step b{font:800 2rem "Bricolage Grotesque",sans-serif;color:var(--hot)}
+footer{border-top:2px solid var(--ink);padding:1.8rem 5vw;color:var(--mute);font-size:.88rem;text-align:center}
+@media(max-width:700px){.hero,.split{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+<a class="logo" href="#home">Lock<b>In</b></a>
+<ul>
+<li><a class="link" href="#home">หน้าแรก</a></li>
+<li><a class="link" href="#pain">ปัญหา</a></li>
+<li><a class="link" href="#products">สินค้า</a></li>
+<li><a class="link" href="#how">วิธีใช้</a></li>
+<li><a class="link" href="#reviews">รีวิว</a></li>
+<li><a class="link" href="#cart">ตะกร้า (<span id="cn">0</span>)</a></li>
+<li><a class="link" href="#contact">ติดต่อเรา</a></li>
+</ul>
+</nav>
+<main>
+
+<section class="page" id="home">
+<div class="hero">
+<div>
+<h1>วางมือถือลง<br>แล้วอ่านให้จบ</h1>
+<p>LockIn คือกล่องล็อกมือถือแบบตั้งเวลา ช่วยให้นักศึกษาตัดสิ่งรบกวนและโฟกัสกับการอ่านหนังสือได้นานขึ้น</p>
+<p><a class="btn" href="#products">ดูสินค้า</a> <a class="btn alt" href="#pain">ทำไมถึงจำเป็น</a></p>
+</div>
+<div class="timer" id="tm">
+<div class="t" id="tt">25:00</div>
+<div class="s" id="ts">ลองกดเริ่ม แล้วนึกภาพว่ามือถือถูกล็อกอยู่ในกล่อง</div>
+<button class="btn" id="tb">เริ่มโฟกัส 25 นาที</button>
+</div>
+</div>
+</section>
+
+<section class="page" id="pain">
+<h2>ปัญหา: อ่านหนังสือไม่เข้าหัว เพราะมือถือ</h2>
+<div class="split">
+<div>
+<p>นักศึกษาหลายคนตั้งใจจะอ่านหนังสือหรือทำงาน แต่แค่หยิบมือถือมาดูแจ้งเตือนครั้งเดียว ก็หลุดไปเล่นโซเชียลต่ออีกครึ่งชั่วโมง กลับมาอีกทีสมาธิหายหมด งานเลยเสร็จช้าและต้องอดนอน</p>
+<p>ความตั้งใจอย่างเดียวไม่พอ เราจึงทำให้มือถืออยู่ไกลมือ และเปิดได้เมื่อหมดเวลาเท่านั้น</p>
+<p class="price">กลุ่มเป้าหมาย: นักเรียน นักศึกษา และคนที่ต้องสอบหรือทำงานที่ต้องใช้สมาธิ</p>
+</div>
+<table>
+<tr><th>ก่อนใช้</th><th>หลังใช้ LockIn</th></tr>
+<tr><td>เช็กมือถือทุก 5 นาที</td><td>ล็อกไว้จนครบรอบ 25 นาที</td></tr>
+<tr><td>อ่านซ้ำเพราะไม่จำ</td><td>อ่านต่อเนื่อง จบเป็นช่วงๆ</td></tr>
+<tr><td>งานเสร็จดึก</td><td>มีเวลาพักและนอนมากขึ้น</td></tr>
+</table>
+</div>
+</section>
+
+<section class="page" id="products">
+<h2>สินค้าของเรา</h2>
+<div class="tabs" id="tabs"></div>
+<label>ค้นหาสินค้า<input id="q" type="search" placeholder="เช่น มินิ พกพา ชุดเซ็ต"></label>
+<div class="grid" id="plist"></div>
+<p id="none" style="display:none;color:var(--mute)">ไม่พบสินค้าที่ค้นหา ลองใช้คำอื่นหรือเลือกหมวดทั้งหมด</p>
+</section>
+
+<section class="page" id="detail">
+<p><a href="#products">← กลับไปหน้าสินค้า</a></p>
+<div class="split">
+<div class="big" id="dbig"><i></i></div>
+<div>
+<h2 id="dn"></h2>
+<p id="dd" style="color:var(--mute)"></p>
+<p class="price" id="dp" style="font-size:1.5rem"></p>
+<ul style="color:var(--mute)"><li>ตั้งเวลาล็อกได้ 15–120 นาที</li><li>วัสดุแข็งแรง ใส่มือถือได้ทุกขนาดถึง 6.9 นิ้ว</li><li>มีช่องสำหรับสายชาร์จ</li></ul>
+<button class="btn" id="dadd">ใส่ตะกร้า</button>
+</div>
+</div>
+</section>
+
+<section class="page" id="how">
+<h2>ใช้งานอย่างไร</h2>
+<div class="step"><b>1</b><div><h3>ใส่มือถือ</h3><p>วางมือถือลงในกล่อง แล้วปิดฝา</p></div></div>
+<div class="step"><b>2</b><div><h3>ตั้งเวลา</h3><p>หมุนเลือกเวลา เช่น 25 นาที กล่องจะล็อกจนกว่าจะครบเวลา</p></div></div>
+<div class="step"><b>3</b><div><h3>อ่านหนังสือ</h3><p>ทำงานหรืออ่านหนังสือเต็มที่ ไม่มีแจ้งเตือนมากวน</p></div></div>
+<div class="step"><b>4</b><div><h3>พักและเปิดกล่อง</h3><p>เมื่อหมดเวลา กล่องจะปลดล็อกเอง พักสั้นๆ แล้วเริ่มรอบใหม่ได้</p></div></div>
+<div class="cols" style="margin-top:2rem">
+<div class="panel"><h3>ช่วยสมาธิ</h3><p>ตัดการเช็กมือถือแบบไม่รู้ตัว</p></div>
+<div class="panel"><h3>ใช้ง่าย</h3><p>ไม่ต้องลงแอปหรือตั้งค่า</p></div>
+<div class="panel"><h3>พกพาได้</h3><p>รุ่นมินิใส่กระเป๋าไปห้องสมุดได้</p></div>
+</div>
+</section>
+
+<section class="page" id="reviews">
+<h2>รีวิวจากผู้ใช้</h2>
+<div class="cols">
+<div>
+<div class="panel" style="margin-bottom:1rem"><p>ช่วงสอบกลางภาค อ่านได้ติดกัน 2 รอบโดยไม่แอบเช็กไลน์เลย ชอบมาก<br><b>นุ่น, ปี 1</b></p></div>
+<div class="panel" id="rl"><p>ซื้อเป็นของขวัญให้เพื่อน ตอนนี้เพื่อนทำรายงานเสร็จเร็วขึ้น<br><b>บอส, ปี 2</b></p></div>
+</div>
+<form id="rf">
+<h3>เขียนรีวิว</h3>
+<label>ชื่อ<input id="rn" required></label>
+<label>ความคิดเห็น<textarea id="rt" rows="3" required></textarea></label>
+<button class="btn" type="submit">ส่งรีวิว</button>
+</form>
+</div>
+</section>
+
+<section class="page" id="cart"><h2>ตะกร้าสินค้า</h2><div id="cbody"></div></section>
+
+<section class="page" id="contact">
+<h2>ติดต่อเรา</h2>
+<div class="split">
+<form id="cf">
+<label>ชื่อ<input required></label>
+<label>อีเมล<input type="email" required></label>
+<label>ข้อความ<textarea rows="4" required></textarea></label>
+<button class="btn" type="submit">ส่งข้อความ</button>
+<p id="cok" style="color:var(--mint);display:none">ส่งข้อความแล้ว เราจะตอบกลับภายใน 1 วันทำการ</p>
+</form>
+<div style="color:var(--mute)"><p>อีเมล: hello@lockin.example<br>ไลน์: @lockin<br>เปิดทุกวัน 10:00–20:00</p></div>
+</div>
+</section>
+
+</main>
+<footer>© 2026 LockIn · โปรเจกต์ TU107</footer>
+
+<script>
+var P=[
+{n:"LockIn Classic",c:"#ffb199",k:"กล่อง",p:590,d:"กล่องล็อกมือถือตั้งเวลารุ่นหลัก ตั้งโต๊ะอ่านหนังสือที่บ้านหรือหอ"},
+{n:"LockIn Mini",c:"#9fe0cc",k:"กล่อง",p:390,d:"รุ่นเล็กพกพาง่าย ใส่กระเป๋าไปห้องสมุดหรือร้านกาแฟได้"},
+{n:"Study Set",c:"#bcd0ff",k:"ชุดเซ็ต",p:790,d:"กล่อง Classic พร้อมสมุดแพลนอ่านหนังสือ 25 นาที 30 หน้า"}];
+var cart={},cat="ทั้งหมด",cur=0;
+function $(i){return document.getElementById(i)}
+function tabs(){var h="";["ทั้งหมด","กล่อง","ชุดเซ็ต"].forEach(function(t){h+='<button class="'+(t==cat?"on":"")+'" data-t="'+t+'">'+t+'</button>'});$("tabs").innerHTML=h}
+function list(){var q=$("q").value.trim().toLowerCase(),h="",n=0;
+P.forEach(function(p,i){if((cat=="ทั้งหมด"||p.k==cat)&&(p.n+p.d+p.k).toLowerCase().indexOf(q)>-1){n++;
+h+='<div class="card"><div class="box" style="--c:'+p.c+'"><i></i></div><div class="b"><h3>'+p.n+'</h3><p>'+p.k+'</p><span class="price">฿'+p.p+'</span><p><a class="btn alt" href="#detail-'+i+'">รายละเอียด</a> <button class="btn" data-a="'+i+'">ใส่ตะกร้า</button></p></div></div>'}});
+$("plist").innerHTML=h;$("none").style.display=n?"none":"block"}
+function count(){var n=0;for(var k in cart)n+=cart[k];$("cn").textContent=n}
+function add(i){cart[i]=(cart[i]||0)+1;count()}
+function drawCart(){var h="",t=0,any=false;
+for(var k in cart){any=true;var p=P[k];t+=p.p*cart[k];h+='<tr><td>'+p.n+'</td><td>× '+cart[k]+'</td><td class="price">฿'+p.p*cart[k]+'</td></tr>'}
+$("cbody").innerHTML=any?'<table>'+h+'<tr><th>รวม</th><th></th><th class="price">฿'+t+'</th></tr></table><p><button class="btn" id="co">สั่งซื้อ</button></p>':'<p style="color:var(--mute)">ตะกร้ายังว่างอยู่ เลือกสินค้าได้ที่หน้าสินค้า</p><a class="btn" href="#products">ไปเลือกสินค้า</a>'}
+function drawDetail(i){cur=i;var p=P[i];$("dn").textContent=p.n;$("dd").textContent=p.d;$("dp").textContent="฿"+p.p;$("dbig").style.setProperty("--c",p.c)}
+function route(){var h=location.hash.slice(1)||"home";
+if(h.indexOf("detail-")==0){drawDetail(+h.slice(7)||0);h="detail"}
+if(!$(h))h="home";
+document.querySelectorAll(".page").forEach(function(s){s.classList.toggle("on",s.id==h)});
+document.querySelectorAll("nav a.link").forEach(function(a){var t=a.getAttribute("href");a.classList.toggle("on",t=="#"+h||(h=="detail"&&t=="#products"))});
+if(h=="cart")drawCart();window.scrollTo(0,0)}
+addEventListener("hashchange",route);
+$("tabs").addEventListener("click",function(e){if(e.target.dataset.t){cat=e.target.dataset.t;tabs();list()}});
+$("q").addEventListener("input",list);
+$("plist").addEventListener("click",function(e){if(e.target.dataset.a!=null)add(e.target.dataset.a)});
+$("dadd").addEventListener("click",function(){add(cur)});
+$("cbody").addEventListener("click",function(e){if(e.target.id=="co"){cart={};count();$("cbody").innerHTML='<p class="price">ขอบคุณสำหรับการสั่งซื้อ เราจะส่งสรุปคำสั่งซื้อให้ทางอีเมล</p><a class="btn" href="#home">กลับหน้าแรก</a>'}});
+$("rf").addEventListener("submit",function(e){e.preventDefault();var d=document.createElement("div");d.className="panel";d.style.marginTop="1rem";var p=document.createElement("p");p.textContent=$("rt").value;var b=document.createElement("b");b.textContent=$("rn").value;p.appendChild(document.createElement("br"));p.appendChild(b);d.appendChild(p);$("rl").after(d);$("rf").reset()});
+$("cf").addEventListener("submit",function(e){e.preventDefault();$("cok").style.display="block";$("cf").reset()});
+var iv=null,left=1500;
+function show(){var m=Math.floor(left/60),s=left%60;$("tt").textContent=(m<10?"0":"")+m+":"+(s<10?"0":"")+s}
+$("tb").addEventListener("click",function(){
+if(iv){clearInterval(iv);iv=null;left=1500;show();$("tm").classList.remove("run");$("ts").textContent="หยุดแล้ว กดเริ่มใหม่ได้ทุกเมื่อ";$("tb").textContent="เริ่มโฟกัส 25 นาที";return}
+$("tm").classList.add("run");$("ts").textContent="มือถือถูกล็อกอยู่ ตั้งใจอ่านต่อได้เลย";$("tb").textContent="หยุด";
+iv=setInterval(function(){left--;show();if(left<=0){clearInterval(iv);iv=null;left=1500;$("tm").classList.remove("run");$("ts").textContent="ครบเวลาแล้ว ปลดล็อกและพักสักครู่";$("tb").textContent="เริ่มรอบใหม่";show()}},1000)});
+tabs();list();route();
+</script>
+</body>
+</html>
